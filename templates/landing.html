@@ -16,7 +16,7 @@
         </p>
         <div class="hero-actions">
             <a href="{{ url_for('register') }}" class="btn-hero">Create free account</a>
-            <a href="#" class="btn-hero">See how it works</a>
+            <a href="#" class="btn-hero" id="videoTrigger">See how it works</a>
         </div>
     </div>
     <div class="hero-visual">
@@ -95,4 +95,54 @@
     </div>
 </section>
 
+<!-- Video Modal -->
+<div id="videoModal" class="modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+        <button class="modal-close" id="modalClose">&times;</button>
+        <div class="modal-video-wrapper">
+            <iframe id="videoFrame" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function() {
+    const modal = document.getElementById('videoModal');
+    const trigger = document.getElementById('videoTrigger');
+    const closeBtn = document.getElementById('modalClose');
+    const overlay = modal.querySelector('.modal-overlay');
+    const iframe = document.getElementById('videoFrame');
+
+    // YouTube video URL (placeholder - replace with actual URL later)
+    const videoUrl = 'https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1';
+
+    function openModal(e) {
+        e.preventDefault();
+        iframe.src = videoUrl;
+        modal.classList.add('modal-active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+        modal.classList.remove('modal-active');
+        iframe.src = '';
+        document.body.style.overflow = '';
+    }
+
+    trigger.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    overlay.addEventListener('click', closeModal);
+
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('modal-active')) {
+            closeModal();
+        }
+    });
+})();
+</script>
 {% endblock %}
